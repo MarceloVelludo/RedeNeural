@@ -13,7 +13,7 @@ alpha = 0.01
 x_train, x_test, y_train, y_test = sd.splitData("iris.data", 0.25)
 
 #Algoritmo de treinamento
-w, b = proc.perceptronTrain(max_it, alpha, x_train, y_train)
+w, b = proc.perceptronTrain(max_it, alpha, x_train, y_train, x_test, y_test)
 #Resultados
 proc.perceptronTest(x_test,y_test,w,b)
 
