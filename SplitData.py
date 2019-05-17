@@ -4,15 +4,25 @@ import numpy as np
 
 def splitData(caminho, testSize):
 
-    test = pd.read_csv(caminho, header=None)
-    test.columns = ["sepal-length", "sepal-width", "petal-length", "petal-width", "class"]
+    iris = pd.read_csv(caminho, header=None)
+    iris.columns = ["sepal-length", "sepal-width", "petal-length", "petal-width", "class"]
 
-    database = test.loc[:, "sepal-length":"petal-width"]
-    target = test['class'][:]
+    # Criando uma classe numerica para as especies (0,1,2)
+    iris.loc[iris[:]["class"] == 'Iris-setosa', 'class'] = 0
+    iris.loc[iris[:]["class"] == 'Iris-versicolor', 'class'] = 1
+    iris.loc[iris[:]["class"] == 'Iris-virginica', 'class'] = 2
 
-    print("Database:", database)
-    print("Target:", target)
+    #Criando input e output
+    x = iris[["sepal-length", "sepal-width", "petal-length", "petal-width"]].values.T
+    y = iris[['class']].values.T
+    y = y.astype('uint8')
+    x = x.transpose()
+    y = y.transpose()
 
-    x_train, x_test, y_train, y_test = train_test_split(database, target, test_size= testSize)
+    print("Database:", x)
+    print("Target:", y)
+    print("Target:", y.shape, x.shape)
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=testSize)
 
     return x_train, x_test, y_train, y_test
