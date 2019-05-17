@@ -1,6 +1,6 @@
 import SplitData as sd
 import Procedimento as proc
-import Resultados as resul
+
 
 #Define o maximo de iterações
 max_it = 1000
