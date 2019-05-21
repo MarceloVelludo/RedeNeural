@@ -25,4 +25,4 @@ def splitData(caminho, testSize):
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=testSize)
 
-    return x_train, x_test, y_train, y_test
+    return np.asarray(x_train), np.asarray(x_test), np.asarray(y_train), np.asarray(y_test)

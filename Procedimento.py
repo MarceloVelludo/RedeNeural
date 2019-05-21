@@ -4,50 +4,83 @@ import numpy as np
 #No caso utilizamos uma relação direta entre
 # a entrada e a saida como função limiar.
 def funcaoLimiar(a):
-    return a
+    #if a < 1:
+    #    return 0
+    #if a >= 1 and a < 2:
+    #    return 1
+    #if a >= 2:
+    #    return 2
+    #return (1/(1+np.exp(-a)))
+    #"""Compute softmax values for each sets of scores in x."""
+    e_x = np.exp(a - np.max(a))
+    return e_x / e_x.sum()
+    #return ((np.exp(a))/(np.exp(a*1)+np.exp(a*2)))
+
+def returnClass(chanceY):
+
+    indiceMaior = 0;
+    count = 0
+    print("chance:", chanceY)
+
+    for i in chanceY:
+        if i >= chanceY[indiceMaior]:
+            indiceMaior = count
+        count += 1
+
+    return indiceMaior
+
 
 #Algoritmo Perceptron
 def perceptronTrain(max_it, alpha, x, d, x_teste, y_teste):
+
     iteracao = 1
-    erroAcumulado = 1
-    y = np.zeros(shape=(len(d), 1))
-    w = np.zeros(shape=(len(x[:][1]), 1))
-    b = np.zeros(1)
+    erroAcumulado = 1.0
+    y = np.zeros(shape=(1, 1))
+    w = np.zeros(shape=(3, len(x[1])))
+    b = np.zeros(shape=(3, 1))
 
-    while (iteracao < max_it) and (erroAcumulado >0):
-
-        print("Época:", iteracao)
+    while (iteracao < max_it) and (erroAcumulado > 0.01):
+        erroAcumulado = 0.0
 
         for count in range(len(x[:])):
-            x_transposto = np.transpose(np.transpose(x[count]))
-            x_teste = x[count]
-            a = np.array([5, 4])[np.newaxis]
-            print(a)
-            print(a.T)
-            aux = np.dot(w, x[count].transpose())
-            y = funcaoLimiar(w*x[count].transpose() + b)
-            erro = d[count][:] - y
-            w += alpha*erro*x[count][:]
-            b += alpha*erro
-            erroAcumulado += erro^2
+            xTransposto = x[count].reshape(4, 1)
+            aux = np.dot(w, xTransposto)
+            chanceY = funcaoLimiar(aux + b)
+            y = returnClass(chanceY)
+            #print("classe:", y)
+            erro = int(d[count])-int(y)
+            if erro != 0:
+                aux2 = alpha*erro*x[count][:]
+                #print("w antes:", w[y])
+                w[y] = np.add(w[y], aux2)
+                #print("w depois:", w[y])
+                b[y] = np.add(b[y], alpha*erro)
+                erroAcumulado += erro**2
 
         perceptronTest(x_teste, y_teste, w, b)
         iteracao += 1
-
+        print("Época:", iteracao)
+        print("W:", w)
+        print("b:", b)
+        print("erro Acumulado:", erroAcumulado)
 
     return w, b
 
 def perceptronTest(x, d, w, b):
     resultadoCorreto = 0
-    count2 = 0
+    y = np.empty(0)
 
     for count in range(len(x[:])):
-        y = funcaoLimiar(w * (x[count].transpose()) + b)
+        xTransposto = x[count].reshape(4, 1)
+        aux = np.dot(w, xTransposto)
+        chanceY = funcaoLimiar(aux + b)
+        y = np.append(y, returnClass(chanceY))
 
     for i in range(len(y)):
-        if i == d[i]:
+        if y[i] == d[i]:
            resultadoCorreto += 1
-
-    print("Eficiencia da Rede Neural: ", (resultadoCorreto/count2), "%")
+    print("Resultado correto:", resultadoCorreto)
+    print("len(y):", len(y))
+    print("Eficiencia da Rede Neural: ", (resultadoCorreto/len(y))*100, "%")
 
     return

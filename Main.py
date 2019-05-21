@@ -1,5 +1,6 @@
 import SplitData as sd
 import Procedimento as proc
+import numpy as np
 
 
 #Define o maximo de iterações
