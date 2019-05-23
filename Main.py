@@ -1,3 +1,4 @@
+# coding: utf-8
 import SplitData as sd
 import Procedimento as proc
 import numpy as np
@@ -6,7 +7,7 @@ import numpy as np
 #Define o maximo de iterações
 max_it = 1000
 #define o alpha
-alpha = 0.01
+alpha = 0.001
 
 #Captura os dados do TXT que se encontra na pasta principal,
 # divide a base em teste e treino, onde o primeiro paramento
