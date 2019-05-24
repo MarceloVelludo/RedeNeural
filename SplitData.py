@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
 
+#Função que separa e organiza os dados em dois datas set: Train e Test
 def splitData(caminho, testSize):
 
     iris = pd.read_csv(caminho, header=None)
@@ -26,3 +27,10 @@ def splitData(caminho, testSize):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=testSize)
 
     return np.asarray(x_train), np.asarray(x_test), np.asarray(y_train), np.asarray(y_test)
+
+#Função que separa o set test em test e validação
+def splitTestInValidation(x,y,test_size):
+
+    x_test, x_val, y_test, y_val = train_test_split(x, y, test_size=test_size)
+
+    return np.asarray(x_test), np.asarray(x_val), np.asarray(y_test), np.asarray(y_val)
